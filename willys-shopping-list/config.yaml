@@ -1,0 +1,25 @@
+name: "Willys Shopping List Sync"
+description: "Synkar Home Assistant inköpslista till Willys inköpslista"
+version: "0.1.0"
+slug: "willys-shopping-list"
+url: "https://github.com/atterdal/ha-willys-shopping-list"
+arch:
+  - amd64
+  - aarch64
+  - i386
+startup: "application"
+boot: "auto"
+options:
+  willys_username: ""
+  willys_password: ""
+  willys_list_id: ""
+  sync_interval_seconds: 30
+  log_level: "info"
+schema:
+  willys_username: "str"
+  willys_password: "password"
+  willys_list_id: "str?"
+  sync_interval_seconds: "int(10,3600)"
+  log_level: "list(debug|info|warning|error)"
+map:
+  - share:rw
