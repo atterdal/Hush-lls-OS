@@ -15,3 +15,5 @@ COPY run.sh /
 RUN chmod a+x /run.sh
 
 COPY willys_sync.py .
+
+CMD [ "/run.sh" ]
