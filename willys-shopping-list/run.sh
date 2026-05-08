@@ -18,20 +18,26 @@ export SYNC_INTERVAL="$(jq -r '.sync_interval_seconds // 30' $CONFIG_PATH)"
 export LOG_LEVEL="$(jq -r '.log_level // "info"' $CONFIG_PATH)"
 export COOKIE_DIR="/share/willys"
 
-# Debug: dump alla token-relaterade env-variabler
-echo "[willys] --- ENV DEBUG START ---"
-env | grep -iE 'TOKEN|SUPERVISOR|HASSIO|HOME_ASSISTANT' | sed 's/=.\{4\}/=XXXX.../' || true
+# Debug: visa alla env-variabler (maskat)
+echo "[willys] --- ENV DEBUG ---"
+echo "[willys] Antal env-variabler: $(env | wc -l)"
+echo "[willys] Alla variabelnamn:"
+env | cut -d= -f1 | sort
 echo "[willys] --- ENV DEBUG END ---"
+
+# Testa supervisor-åtkomst
+echo "[willys] Testar supervisor..."
+curl -s -o /dev/null -w "supervisor /info: HTTP %{http_code}\n" http://supervisor/info 2>&1 | sed 's/^/[willys] /' || echo "[willys] curl mot supervisor misslyckades"
 
 # Prova olika token-namn
 if [ -n "$SUPERVISOR_TOKEN" ]; then
-    export HA_TOKEN="${SUPERVISOR_TOKEN}"
+    export HA_TOKEN="$SUPERVISOR_TOKEN"
+    echo "[willys] Hittade SUPERVISOR_TOKEN"
 elif [ -n "$HASSIO_TOKEN" ]; then
-    export HA_TOKEN="${HASSIO_TOKEN}"
+    export HA_TOKEN="$HASSIO_TOKEN"
+    echo "[willys] Hittade HASSIO_TOKEN"
 else
     echo "[willys] WARNING: Ingen HA-token hittad"
-    echo "[willys] Tips: Avinstallera och installera om add-on:et"
-    export HA_TOKEN=""
 fi
 
 export HA_URL="http://supervisor/core"
@@ -40,6 +46,10 @@ mkdir -p "${COOKIE_DIR}"
 
 echo "[willys] Username: ${WILLYS_USERNAME:0:4}***"
 echo "[willys] Sync interval: ${SYNC_INTERVAL}s"
-echo "[willys] HA_TOKEN set: $([ -n \"$HA_TOKEN\" ] && echo 'yes' || echo 'no')"
+if [ -n "$HA_TOKEN" ]; then
+    echo "[willys] HA_TOKEN: ja"
+else
+    echo "[willys] HA_TOKEN: nej"
+fi
 echo "[willys] Startar Python..."
 exec python3 /app/willys_sync.py
