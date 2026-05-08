@@ -1,6 +1,6 @@
 name: "Willys Shopping List Sync"
 description: "Synkar Home Assistant inköpslista till Willys inköpslista"
-version: "0.3.1"
+version: "0.3.2"
 slug: "willys-shopping-list"
 url: "https://github.com/atterdal/ha-willys-shopping-list"
 arch:

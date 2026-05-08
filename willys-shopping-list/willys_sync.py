@@ -340,6 +340,8 @@ def main():
     log.info("Autentiserar mot Willys...")
     if not willys.ensure_authenticated():
         log.error("Kunde inte logga in på Willys – kontrollera credentials")
+        log.error("Försöker igen om 60 sekunder...")
+        time.sleep(60)
         sys.exit(1)
 
     list_id = resolve_list_id(willys, configured_list_id)
