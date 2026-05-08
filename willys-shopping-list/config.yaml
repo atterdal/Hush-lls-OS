@@ -1,6 +1,6 @@
 name: "Willys Shopping List Sync"
 description: "Synkar Home Assistant inköpslista till Willys inköpslista"
-version: "0.2.2"
+version: "0.2.3"
 slug: "willys-shopping-list"
 url: "https://github.com/atterdal/ha-willys-shopping-list"
 arch:
@@ -22,5 +22,6 @@ schema:
   willys_list_id: "str?"
   sync_interval_seconds: "int(10,3600)"
   log_level: "list(debug|info|warning|error)"
+homeassistant_api: true
 map:
   - share:rw
