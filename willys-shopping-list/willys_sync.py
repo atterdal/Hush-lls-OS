@@ -324,8 +324,12 @@ def main():
     ha_token = os.environ.get("HA_TOKEN", "")
     ha_url = os.environ.get("HA_URL", "http://supervisor/core")
     if not ha_token:
-        log.error("HA_TOKEN (SUPERVISOR_TOKEN) saknas")
-        sys.exit(1)
+        log.error("HA_TOKEN (SUPERVISOR_TOKEN) saknas!")
+        log.error("Trolig fix: Avinstallera add-on:et helt och installera om.")
+        log.error("homeassistant_api: true måste finnas vid installation.")
+        log.error("Containern fortsätter köra så du kan se loggen.")
+        while True:
+            time.sleep(60)
 
     interval = int(os.environ.get("SYNC_INTERVAL", "30"))
     configured_list_id = os.environ.get("WILLYS_LIST_ID", "")
